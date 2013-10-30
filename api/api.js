@@ -19,7 +19,7 @@ var app = express();
 app.use(swagger.init(app, {
     apiVersion: '1.0',
     swaggerVersion: '1.0',
-    basePath: 'http://localhost:9987',
+    basePath: 'http://' + config.api.hostname + ':' + config.api.port,
     swaggerUI: './public/swagger-ui/dist/',
     apis: [ path.resolve(__dirname, './routes/index.js') ]
 }));
