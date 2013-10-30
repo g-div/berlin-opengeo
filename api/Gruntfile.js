@@ -9,17 +9,6 @@ module.exports = function(grunt) {
       },
       all: ['routes/**/*.js', 'public/**/*.js', 'app.js', 'Grunfile.js']
     },
-    uglify: {
-      options: {
-        banner: '<%= banner %>',
-        mangle: {
-          except: ['jQuery', '$']
-        }
-      },
-      my_target: {
-        files: {}
-      }
-    },
     watch: {
       scripts: {
         files: ['!node_modules', 'app.js', 'Grunfile.js', './public/**/*.js', './routes/**/*.js'],
@@ -32,8 +21,7 @@ module.exports = function(grunt) {
     }
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['jshint', 'uglify', 'watch']);
+  grunt.registerTask('default', ['jshint', 'watch']);
 };
