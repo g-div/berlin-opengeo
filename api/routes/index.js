@@ -3,6 +3,12 @@ var path = require('path'),
     mongojs = require('mongojs'),
     db = mongojs(config.db);
 
+/**
+ * @swagger
+ * resourcePath: /api
+ * description: An Open Source geocoding-system for Berlin
+ */
+
 exports.init = function (app) {
 
     app.setResponse = function setResponse(res, result) {
