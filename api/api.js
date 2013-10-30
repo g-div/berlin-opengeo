@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -22,22 +21,24 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function (req, res) {
-  res.status(404).render('404.html', {title: 'Not found, 404'});
+    res.status(404).render('404.html', {
+        title: 'Not found, 404'
+    });
 });
 // development only
 if ('development' === app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
-var routesDir = './routes';
+var routesDir = path.resolve(__dirname, './routes');
 fs.readdir(routesDir, function (err, files) {
-  assert.ifError(err);
-  files.forEach(function (file) {
-    require(path.join(__dirname, routesDir, file)).init(app);
-  });
+    assert.ifError(err);
+    files.forEach(function (file) {
+        require(path.join(routesDir, file)).init(app);
+    });
 });
 
-http.createServer(app).listen(config.api.port, function(){
-  var urlOfApp = 'http://' + config.api.hostname + ':' + config.api.port;
-  console.log('server running : ' + urlOfApp);
+http.createServer(app).listen(config.api.port, function () {
+    var urlOfApp = 'http://' + config.api.hostname + ':' + config.api.port;
+    console.log('server running : ' + urlOfApp);
 });
