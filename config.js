@@ -4,6 +4,6 @@ module.exports = {
     "api": {
         "hostname": "localhost",
         "port": 9987,
-        "url": "/api/v1/"
+        "url": "/api/v1"
     }
 };
