@@ -1,0 +1,23 @@
+{
+  "name": "geocoder",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.4.0",
+    "consolidate": "0.9.1",
+    "underscore": "1.5.2",
+    "mongojs": "~0.9.6"
+  },
+  "devDependencies": {
+    "grunt": "0.4.1",
+    "grunt-contrib-jshint": "0.6.4",
+    "grunt-contrib-uglify": "0.2.4",
+    "grunt-contrib-cssmin": "0.6.1",
+    "grunt-contrib-imagemin": "0.3.0",
+    "grunt-contrib-watch": "0.5.3",
+    "grunt-sass": "0.6.1"
+  }
+}
