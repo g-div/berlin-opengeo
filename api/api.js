@@ -29,8 +29,8 @@ app.set('port', config.api.hostname);
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.methodOverride());
-app.set('view engine', 'ejs');
 app.use(app.router);
+app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function (req, res) {
@@ -54,5 +54,5 @@ fs.readdir(routesDir, function (err, files) {
 
 http.createServer(app).listen(config.api.port, function () {
     var urlOfApp = 'http://' + config.api.hostname + ':' + config.api.port;
-    console.log('server running : ' + urlOfApp);
+    console.log('API running at: ' + urlOfApp);
 });
