@@ -1,17 +1,20 @@
 {
-    "name": "geocoder",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "start": "node api"
-    },
-    "dependencies": {
-        "express": "3.4.0",
-        "mongojs": "~0.9.6"
-    },
-    "devDependencies": {
-        "grunt": "0.4.1",
-        "grunt-contrib-jshint": "0.6.4",
-        "grunt-contrib-watch": "0.5.3"
-    }
+  "name": "geocoder",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node api/api.js"
+  },
+  "dependencies": {
+    "express": "3.4.0",
+    "mongojs": "~0.9.6",
+    "swagger-express": "~1.0.1",
+    "html": "0.0.7",
+    "ejs": "~0.8.4"
+  },
+  "devDependencies": {
+    "grunt": "0.4.1",
+    "grunt-contrib-jshint": "0.6.4",
+    "grunt-contrib-watch": "0.5.3"
+  }
 }

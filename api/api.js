@@ -9,19 +9,32 @@ var express = require('express'),
     path = require('path'),
     config = require(path.resolve(__dirname, '../config.js')),
     mongojs = require('mongojs'),
-    db = mongojs(config.db);
+    db = mongojs(config.db),
+    swagger = require('swagger-express');
+
 
 var app = express();
+
+// swagger
+app.use(swagger.init(app, {
+    apiVersion: '1.0',
+    swaggerVersion: '1.0',
+    basePath: 'http://localhost:9987',
+    swaggerUI: './public/swagger-ui/dist/',
+    apis: [ path.resolve(__dirname, './routes/index.js') ]
+}));
 
 // all environments
 app.set('port', config.api.hostname);
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.methodOverride());
+app.set('view engine', 'ejs');
 app.use(app.router);
+app.set('views', __dirname + '/views');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function (req, res) {
-    res.status(404).render('404.html', {
+    res.status(404).render('404.ejs', {
         title: 'Not found, 404'
     });
 });
@@ -29,6 +42,7 @@ app.use(function (req, res) {
 if ('development' === app.get('env')) {
     app.use(express.errorHandler());
 }
+
 
 var routesDir = path.resolve(__dirname, './routes');
 fs.readdir(routesDir, function (err, files) {
