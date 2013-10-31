@@ -35,5 +35,6 @@ Built on top of: Node.js, Express, Express-Swagger, Swagger-UI and MongoDB.
 
 ### TODOs
 - CORS ✓
+- Fix mongoimport in **setup.sh**
 - Caching (Redis ?) 
 - API-Key Authentification
