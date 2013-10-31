@@ -33,6 +33,6 @@ then open your browser at [http://localhost:9987/docs/](http://localhost:9987/do
 Built on top of: Node.js, Express, Express-Swagger, Swagger-UI and MongoDB.
 
 ### TODOs
-- CORS [V]
-- Caching (Redis ?) [X]
-- API-Key Authentification [X]
+- [x] CORS
+- [ ] Caching (Redis ?)
+- [ ] API-Key Authentification
