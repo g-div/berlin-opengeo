@@ -1,7 +1,7 @@
 berlin-opengeo
 ==============
 
-An Open Source geocoder for Berlin.
+An Open Source geocoder for Berlin based on the data published [here](http://datenjournalist.de/strassen-und-hausnummern-in-berlin-mit-geokoordinaten-als-open-data/).
 
 ## Installation
     git clone git@github.com:g-div/berlin-opengeo.git
@@ -29,3 +29,10 @@ then open your browser at [http://localhost:9987/docs/](http://localhost:9987/do
 - MongoDB
 - Node.js
 - npm
+
+Built on top of: Node.js, Express, Express-Swagger, Swagger-UI and MongoDB.
+
+### TODOs
+- CORS [V]
+- Caching (Redis ?) [X]
+- API-Key Authentification [X]
