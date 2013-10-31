@@ -21,6 +21,6 @@ cd $DEST
 #mongod --dbpath /lot/of/freespace
 mongoimport --db geocoder --collection data < data/full-data.json.stream
 
-echo "Delete data directory"
+echo "Clean the destination directory"
 cd ..
 rm -r $DEST
