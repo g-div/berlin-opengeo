@@ -24,6 +24,7 @@ then open your browser at [http://localhost:9987/docs/](http://localhost:9987/do
 
 
 ### Requirements:
+- **~5 GB** of **FREESPACE**
 - wget
 - 7zip
 - MongoDB
