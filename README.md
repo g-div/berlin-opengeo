@@ -14,6 +14,7 @@ An Open Source geocoder for Berlin.
     npm start
     
 or
+    
     node api/api.js
 
 then open your browser at [http://localhost:9987/docs/](http://localhost:9987/docs/) to visit the API documentation
