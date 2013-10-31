@@ -10,9 +10,6 @@ An Open Source geocoder for Berlin.
     ./setup.sh
     npm install
 
-## Install dependecies
-	npm install
-
 ## Start
     npm start
     
