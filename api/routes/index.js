@@ -1,7 +1,10 @@
 var path = require('path'),
     config = require(path.resolve(__dirname, '../../config.js')),
-    mongojs = require('mongojs'),
-    db = mongojs(config.db);
+    db = require(path.resolve(__dirname, '../lib/db.js')),
+    parser = require(path.resolve(__dirname, '../lib/parser.js')),
+    response = require(path.resolve(__dirname, '../lib/response.js'));
+
+
 
 /**
  * @swagger
@@ -10,29 +13,6 @@ var path = require('path'),
  */
 
 exports.init = function (app) {
-
-    String.prototype.trim = function(){
-        return this.replace(/^\s+|\s+$/g, '');
-    }
-
-    app.parseParams = function parseParams(query){
-        var street = query.replace(/\d/gi, ''),
-            housenr = /\d{1,3}/.exec(query),
-            plz = /\d{5}/.exec(query),
-            dbReq = {
-                name : street.trim() || '',
-                hausnr : typeof housenr !== undefined ? housenr[0].trim() : '',
-                plz : typeof plz !== undefined ? plz[0].trim() : ''
-            };
-
-        return dbReq;
-    }
-
-    app.setResponse = function setResponse(res, result) {
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        res.send(200, result);
-        return res;
-    };
 
     /**
      * @swagger
@@ -177,8 +157,8 @@ exports.init = function (app) {
      */
     app.get(config.api.url, function (req, res) {
 
-        db.collection('data').find(req.query, function (err, doc) {
-            app.setResponse(res, doc);
+        db.searchQuery(req.query, function (doc) {
+            response.setResponse(res, doc);
         });
     });
     /**
@@ -200,15 +180,15 @@ exports.init = function (app) {
         var query = req.query.q;
 
         if(query){
-            dbRequest = app.parseParams(query);
+            dbRequest = parser.parseParams(query);
 
             console.log(dbRequest);
 
-            db.collection('data').find(dbRequest, function (err, doc) {
-                app.setResponse(res, doc);
+            db.searchQuery(dbRequest, function (doc) {
+                response.setResponse(res, doc);
             });
         }else{
-            app.setResponse(res, {error : 'empty query. Please enter a valid query.'});
+            response.setResponse(res, {error : 'empty query. Please enter a valid query.'});
         }
 
     });
