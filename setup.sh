@@ -17,8 +17,9 @@ echo "Extracting the archive"
 cd $DEST
 7z e $NAME$EXTENSION
 
-# mongod --dbpath /lot/of/freespace
-# mongoimport --db $config.db --ćollection data < data/full-data.json.stream
+#mongod --dbpath /lot/of/freespace
+#mongoimport --db geocoder.db --collection data < data/full-data.json.stream
 
+echo "Delete data directory"
 cd ..
 rm -r $DEST
