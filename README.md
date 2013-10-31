@@ -1,7 +1,7 @@
 berlin-opengeo
 ==============
 
-An Open Source geocoder for Berlin
+An Open Source geocoder for Berlin.
 
 ## Installation
     git clone git@github.com:g-div/berlin-opengeo.git
@@ -10,11 +10,13 @@ An Open Source geocoder for Berlin
     ./setup.sh
     npm install
 
+## Install dependecies
+	npm install
+
 ## Start
     npm start
     
 or
-
     node api/api.js
 
 then open your browser at [http://localhost:9987/docs/](http://localhost:9987/docs/) to visit the API documentation
@@ -26,4 +28,3 @@ then open your browser at [http://localhost:9987/docs/](http://localhost:9987/do
 - MongoDB
 - Node.js
 - npm
-    
