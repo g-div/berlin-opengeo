@@ -17,6 +17,9 @@ or
     
     node api/api.js
 
+
+## API Documentation
+
 then open your browser at [http://localhost:9987/docs/](http://localhost:9987/docs/) to visit the API documentation
 
 

@@ -11,6 +11,23 @@ var path = require('path'),
 
 exports.init = function (app) {
 
+    String.prototype.trim = function(){
+        return this.replace(/^\s+|\s+$/g, '');
+    }
+
+    app.parseParams = function parseParams(query){
+        var street = query.replace(/\d/gi, ''),
+            housenr = /\d{1,3}/.exec(query),
+            plz = /\d{5}/.exec(query),
+            dbReq = {
+                name : street.trim() || '',
+                hausnr : typeof housenr !== undefined ? housenr[0].trim() : '',
+                plz : typeof plz !== undefined ? plz[0].trim() : ''
+            };
+
+        return dbReq;
+    }
+
     app.setResponse = function setResponse(res, result) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.send(200, result);
@@ -110,7 +127,7 @@ exports.init = function (app) {
      *          dataType: integer
      *        - name: einschulungsbezirk
      *          paramType: query
-     *          description: Einschulungsbezirksnumer
+     *          description: Einschulungsbezirksnummer
      *          dataType: integer
      *        - name: verkehrsflaeche
      *          paramType: query
@@ -159,6 +176,7 @@ exports.init = function (app) {
      *            
      */
     app.get(config.api.url, function (req, res) {
+
         db.collection('data').find(req.query, function (err, doc) {
             app.setResponse(res, doc);
         });
@@ -177,11 +195,21 @@ exports.init = function (app) {
     
 
     app.get(config.api.url + '/search/', function (req, res) {
-        parseParams(req);
 
-        db.collection('data').find(req.query, function (err, doc) {
-            app.setResponse(res, doc);
-        });
+        // search query, show error if emtpy
+        var query = req.query.q;
+
+        if(query){
+            dbRequest = app.parseParams(query);
+
+            console.log(dbRequest);
+
+            db.collection('data').find(dbRequest, function (err, doc) {
+                app.setResponse(res, doc);
+            });
+        }else{
+            app.setResponse(res, {error : 'empty query. Please enter a valid query.'});
+        }
 
     });
 };
