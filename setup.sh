@@ -17,8 +17,9 @@ echo "Extracting the archive"
 cd $DEST
 7z e $NAME$EXTENSION
 
+# if your mongodb stores data in a folder with to few memory, please chose another one:
 #mongod --dbpath /lot/of/freespace
-#mongoimport --db geocoder.db --collection data < data/full-data.json.stream
+mongoimport --db geocoder --collection data < data/full-data.json.stream
 
 echo "Delete data directory"
 cd ..
