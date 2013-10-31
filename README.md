@@ -24,6 +24,7 @@ then open your browser at [http://localhost:9987/docs/](http://localhost:9987/do
 
 
 ### Requirements:
+- **~5 GB** of **FREESPACE**
 - wget
 - 7zip
 - MongoDB
@@ -33,6 +34,7 @@ then open your browser at [http://localhost:9987/docs/](http://localhost:9987/do
 Built on top of: Node.js, Express, Express-Swagger, Swagger-UI and MongoDB.
 
 ### TODOs
-- [x] CORS
-- [ ] Caching (Redis ?)
-- [ ] API-Key Authentification
+- CORS ✓
+- Fix mongoimport in **setup.sh**
+- Caching (Redis ?) 
+- API-Key Authentification
