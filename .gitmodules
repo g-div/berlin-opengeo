@@ -1,3 +1,0 @@
-[submodule "api/public/swagger-ui"]
-	path = api/public/swagger-ui
-	url = https://github.com/wordnik/swagger-ui.git
