@@ -35,10 +35,12 @@ if ('development' === app.get('env')) {
     app.use(express.errorHandler());
 }
 
+// redirect from the root to the documentation
 app.get("/", function (req, res) {
     res.redirect("/docs");   
 });  
 
+// load all routes
 var routesDir = path.resolve(__dirname, './routes');
 fs.readdir(routesDir, function(err, files) {
     assert.ifError(err);
@@ -47,6 +49,7 @@ fs.readdir(routesDir, function(err, files) {
     });
 });
 
+// start the server
 http.createServer(app).listen(config.api.port, function() {
     var urlOfApp = 'http://' + config.api.hostname + ':' + config.api.port;
     console.log('API running at: ' + urlOfApp);
