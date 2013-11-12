@@ -1,17 +1,3 @@
-/**
- * @swagger
- * resourcePath: /api/v1
- * description: An Open Source geocoding-system for Berlin
- * models:
- *   Geolocation:
- *     id: _id
- *     properties:
- *       name:
- *         type: String
- *       nummer:
- *         type: Integer
- */
-
 var express = require('express'),
     http = require('http'),
     fs = require('fs'),
@@ -30,8 +16,19 @@ app.use(swagger.init(app, {
     swaggerVersion: '1.0',
     basePath: 'http://' + config.api.hostname + ':' + config.api.port + config.api.url,
     swaggerUI: './docs',
-    apis: [path.resolve(__dirname, './routes/index.js')]
+    apis: [ path.resolve(__dirname, './docs.yml') ]
 }));
+
+/**
+ * models:
+ *   Geolocation:
+ *     id: _id
+ *     properties:
+ *       name:
+ *         type: String
+ *       nummer:
+ *         type: Integer
+ */
 
 // all environments
 app.set('port', config.api.hostname);
