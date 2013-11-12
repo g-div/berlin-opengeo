@@ -19,17 +19,6 @@ app.use(swagger.init(app, {
     apis: [ path.resolve(__dirname, './docs.yml') ]
 }));
 
-/**
- * models:
- *   Geolocation:
- *     id: _id
- *     properties:
- *       name:
- *         type: String
- *       nummer:
- *         type: Integer
- */
-
 // all environments
 app.set('port', config.api.hostname);
 app.use(express.favicon());
@@ -46,6 +35,9 @@ if ('development' === app.get('env')) {
     app.use(express.errorHandler());
 }
 
+app.get("/", function (req, res) {
+    res.redirect("/docs");   
+});  
 
 var routesDir = path.resolve(__dirname, './routes');
 fs.readdir(routesDir, function(err, files) {
