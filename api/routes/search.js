@@ -8,13 +8,13 @@ exports.init = function (app) {
 
     /**
      * @swagger
-     * path: /
+     * path: /search/
      * operations:
      *   -  httpMethod: GET
-     *      summary: Send a request, serching by address
-     *      notes: Returns an array of geolocations-objects
+     *      summary: Serching without required fields
+     *      notes: /!\ Please use carefully /!\
      *      responseClass: Geolocation
-     *      nickname: ByAddress
+     *      nickname: ByParams
      *      consumes: 
      *        - application/json
      *      parameters:
@@ -39,7 +39,6 @@ exports.init = function (app) {
      *        - name: name
      *          description: Straße
      *          paramType: query
-     *          required: true
      *          dataType: string
      *        - name: nummer
      *          paramType: query
@@ -147,11 +146,18 @@ exports.init = function (app) {
      *          dataType: string
      *            
      */
-    app.get(config.api.url, function (req, res) {
+    app.get(config.api.url + '/search/', function (req, res) {
 
-        db.searchQuery(req.query, function (doc) {
-            response.setResponse(res, doc);
-        });
-    });    
-    
+        if(req.query){
+            //dbRequest = parser.parseParams(req.query);
+
+            db.searchQuery(req.query, function (doc) {
+                response.setResponse(res, doc);
+            });
+        }else{
+            response.setResponse(res, {error : 'empty query. Please enter a valid query.'});
+        }
+
+    });
+
 };
