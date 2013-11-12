@@ -1,5 +1,15 @@
 /**
- * Module dependencies.
+ * @swagger
+ * resourcePath: /api/v1
+ * description: An Open Source geocoding-system for Berlin
+ * models:
+ *   Geolocation:
+ *     id: _id
+ *     properties:
+ *       name:
+ *         type: String
+ *       nummer:
+ *         type: Integer
  */
 
 var express = require('express'),
@@ -12,7 +22,6 @@ var express = require('express'),
     db = mongojs(config.db),
     swagger = require('swagger-express');
 
-
 var app = express();
 
 // swagger
@@ -21,7 +30,7 @@ app.use(swagger.init(app, {
     swaggerVersion: '1.0',
     basePath: 'http://' + config.api.hostname + ':' + config.api.port + config.api.url,
     swaggerUI: './docs',
-    apis: [ path.resolve(__dirname, './routes/index.js') ]
+    apis: [path.resolve(__dirname, './routes/index.js')]
 }));
 
 // all environments
@@ -30,13 +39,10 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.methodOverride());
 app.use(app.router);
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(function (req, res) {
-    res.status(404).render('404.ejs', {
-        title: 'Not found, 404'
-    });
+app.use(function(req, res) {
+    res.title = "Not found";
+    res.send(404);
 });
 // development only
 if ('development' === app.get('env')) {
@@ -45,14 +51,14 @@ if ('development' === app.get('env')) {
 
 
 var routesDir = path.resolve(__dirname, './routes');
-fs.readdir(routesDir, function (err, files) {
+fs.readdir(routesDir, function(err, files) {
     assert.ifError(err);
-    files.forEach(function (file) {
+    files.forEach(function(file) {
         require(path.join(routesDir, file)).init(app);
     });
 });
 
-http.createServer(app).listen(config.api.port, function () {
+http.createServer(app).listen(config.api.port, function() {
     var urlOfApp = 'http://' + config.api.hostname + ':' + config.api.port;
     console.log('API running at: ' + urlOfApp);
 });
