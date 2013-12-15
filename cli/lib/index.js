@@ -1,2 +1,3 @@
 /* Commands routing */
-this.cmd('gecode :file', commands.geocode);
+this.cmd('gecodefile :file', commands.geocodfile);
+this.cmd('gecode', commands.geocode);
