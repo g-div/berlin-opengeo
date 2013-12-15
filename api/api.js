@@ -12,11 +12,15 @@ var express = require('express'),
 var app = express(),
     defaultRouting = require('./lib/router.js'),
     docs = path.resolve(config.documentation),
-    apiConfig = YAML.safeLoad(fs.readFileSync(docs).toString());
+    apiConfig = getApiDocumentation();
+
+function getApiDocumentation() {
+    return YAML.safeLoad(fs.readFileSync(docs).toString());
+}
 
 // reload the api documentation on change
 fs.watchFile(docs, function() {
-    apiConfig = YAML.safeLoad(fs.readFileSync(docs).toString());
+    apiConfig = getApiDocumentation();
 });
 
 
