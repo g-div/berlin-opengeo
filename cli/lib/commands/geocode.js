@@ -1,5 +1,5 @@
 var app,
-	db = require('../../../api/lib/db'),
+	db = require('../../../lib/db'),
 	flatiron = require('flatiron');
 
 function processFile() {
