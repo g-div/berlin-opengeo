@@ -1,23 +1,36 @@
 #! /usr/bin/node
+
 var express = require('express'),
     http = require('http'),
     fs = require('fs'),
-    assert = require('assert'),
     path = require('path'),
     config = require(path.resolve(__dirname, '../config.js')),
-    mongojs = require('mongojs'),
-    db = mongojs(config.db),
-    swagger = require('swagger-express');
+    swagger = require('swagger-express'),
+    YAML = require('js-yaml');
 
-var app = express();
+
+var app = express(),
+    defaultRouting = require('./lib/router.js'),
+    docs = path.resolve(config.documentation),
+    apiConfig = getApiDocumentation();
+
+function getApiDocumentation() {
+    return YAML.safeLoad(fs.readFileSync(docs).toString());
+}
+
+// reload the api documentation on change
+fs.watchFile(docs, function() {
+    apiConfig = getApiDocumentation();
+});
+
 
 // swagger
 app.use(swagger.init(app, {
     apiVersion: '1.0',
     swaggerVersion: '1.0',
-    basePath: 'http://' + config.api.hostname + ':' + config.api.port + config.api.url,
+    basePath: 'http://' + config.api.hostname + ':' + config.api.port + apiConfig.resourcePath,
     swaggerUI: './docs',
-    apis: [ path.resolve(__dirname, './docs.yml') ]
+    apis: [docs]
 }));
 
 // all environments
@@ -37,18 +50,12 @@ if ('development' === app.get('env')) {
 }
 
 // redirect from the root to the documentation
-app.get("/", function (req, res) {
-    res.redirect("/docs");   
-});  
+app.get("/", function(req, res) {
+    res.redirect("/docs");
+});
 
 // load all routes
-var routesDir = path.resolve(__dirname, './routes');
-fs.readdir(routesDir, function(err, files) {
-    assert.ifError(err);
-    files.forEach(function(file) {
-        require(path.join(routesDir, file)).init(app);
-    });
-});
+defaultRouting.init(app, apiConfig);
 
 // start the server
 http.createServer(app).listen(config.api.port, function() {

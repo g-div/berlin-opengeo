@@ -12,3 +12,8 @@ module.exports.setResponse = function(res, result) {
     res.send(200, result);
     return res;
 };
+
+module.exports.errorResponse = function(res, missingParam) {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(400, {error: "Bad Request: One or more required query parameters are missing, as for example '" + missingParam + "' please check your query and try again."});
+};
