@@ -2,26 +2,33 @@
 
 var express = require('express'),
     http = require('http'),
+    fs = require('fs'),
     path = require('path'),
-    _ = require('underscore'),
     config = require(path.resolve(__dirname, '../config.js')),
-    db = require('./lib/db.js'),
-    response = require('./lib/response.js'),
     swagger = require('swagger-express'),
-    YAML = require('require-yaml');
+    YAML = require('js-yaml');
 
 
 var app = express(),
-    docs = path.resolve(__dirname, './docs.yml'),
-    apiConfig = require(docs),
-    apiURL = apiConfig.resourcePath;
+    defaultRouting = require('./lib/router.js'),
+    docs = path.resolve(config.documentation),
+    apiConfig = getApiDocumentation();
+
+function getApiDocumentation() {
+    return YAML.safeLoad(fs.readFileSync(docs).toString());
+}
+
+// reload the api documentation on change
+fs.watchFile(docs, function() {
+    apiConfig = getApiDocumentation();
+});
 
 
 // swagger
 app.use(swagger.init(app, {
     apiVersion: '1.0',
     swaggerVersion: '1.0',
-    basePath: 'http://' + config.api.hostname + ':' + config.api.port + apiURL,
+    basePath: 'http://' + config.api.hostname + ':' + config.api.port + apiConfig.resourcePath,
     swaggerUI: './docs',
     apis: [docs]
 }));
@@ -48,38 +55,7 @@ app.get("/", function(req, res) {
 });
 
 // load all routes
-function selectOperation(operations) {
-    return _.find(operations, function(oper) {
-        return oper.httpMethod === 'GET';
-    });
-}
-
-function selectRequired(parameters) {
-    return _.chain(parameters).filter(function(param) {
-        return param.required == true;
-    }).pluck('name').value()
-}
-
-function parseQuery(query, params) {
-    _.keys(query).forEach(function(key) {
-        if (!_.chain(params).pluck('name').contains(key.toString()).value()) {
-            delete query[key];
-        }
-    });
-    return query;
-}
-
-apiConfig.apis.forEach(function(api) {
-    app.get(apiURL + api.path, function(req, res) {
-        var parameters = selectOperation(api.operations).parameters,
-            required = selectRequired(parameters),
-            parsedQuery = parseQuery(req.query, parameters);
-
-        db.searchQuery(parsedQuery, function(doc) {
-            response.setResponse(res, doc);
-        });
-    });
-});
+defaultRouting.init(app, apiConfig);
 
 // start the server
 http.createServer(app).listen(config.api.port, function() {
