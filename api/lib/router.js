@@ -1,5 +1,5 @@
 var _ = require('underscore'),
-    db = require('./db.js'),
+    db = require('../../lib/db.js'),
     response = require('./response.js');
 
 
