@@ -69,15 +69,29 @@ function parseQuery(query, params) {
     return query;
 }
 
+function search(parsedQuery) {
+    db.searchQuery(parsedQuery, function(doc) {
+        response.setResponse(res, doc);
+    });
+}
+
 apiConfig.apis.forEach(function(api) {
     app.get(apiURL + api.path, function(req, res) {
         var parameters = selectOperation(api.operations).parameters,
             required = selectRequired(parameters),
             parsedQuery = parseQuery(req.query, parameters);
 
-        db.searchQuery(parsedQuery, function(doc) {
-            response.setResponse(res, doc);
-        });
+        if (required.length != 0) {
+            required.forEach(function(reqm) {
+                if (!_.contains(_.keys(parsedQuery), reqm)) {
+                    response.errorResponse(res, reqm);
+                } else {
+                    search(parsedQuery);
+                }
+            });
+        } else {
+            search(parseQuery);
+        }
     });
 });
 
