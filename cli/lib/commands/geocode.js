@@ -1,10 +1,6 @@
 var app,
-	db = require('../../../api/lib/db'),
+	db = require('../../../lib/db'),
 	flatiron = require('flatiron');
-
-function processFile() {
-	app.log.info('File: ');
-}
 
 module.exports = function() {
 	app = this;
@@ -43,12 +39,10 @@ module.exports = function() {
 		keys.forEach(function(e,i){
 			query[e] = '' + that.argv[e];
 		})
-
-		console.log( query )
 	
-	db.searchQuery( query, function(data){
+	db.searchQuery(query, function(data){
 		console.info(data);
+		process.exit();
 	});
-
 	
 };
