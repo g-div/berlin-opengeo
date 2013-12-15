@@ -1,23 +1,29 @@
 #! /usr/bin/node
+
 var express = require('express'),
     http = require('http'),
-    fs = require('fs'),
-    assert = require('assert'),
     path = require('path'),
+    _ = require('underscore'),
     config = require(path.resolve(__dirname, '../config.js')),
-    mongojs = require('mongojs'),
-    db = mongojs(config.db),
-    swagger = require('swagger-express');
+    db = require('./lib/db.js'),
+    response = require('./lib/response.js'),
+    swagger = require('swagger-express'),
+    YAML = require('require-yaml');
 
-var app = express();
+
+var app = express(),
+    docs = path.resolve(__dirname, './docs.yml'),
+    apiConfig = require(docs),
+    apiURL = apiConfig.resourcePath;
+
 
 // swagger
 app.use(swagger.init(app, {
     apiVersion: '1.0',
     swaggerVersion: '1.0',
-    basePath: 'http://' + config.api.hostname + ':' + config.api.port + config.api.url,
+    basePath: 'http://' + config.api.hostname + ':' + config.api.port + apiURL,
     swaggerUI: './docs',
-    apis: [ path.resolve(__dirname, './docs.yml') ]
+    apis: [docs]
 }));
 
 // all environments
@@ -37,16 +43,41 @@ if ('development' === app.get('env')) {
 }
 
 // redirect from the root to the documentation
-app.get("/", function (req, res) {
-    res.redirect("/docs");   
-});  
+app.get("/", function(req, res) {
+    res.redirect("/docs");
+});
 
 // load all routes
-var routesDir = path.resolve(__dirname, './routes');
-fs.readdir(routesDir, function(err, files) {
-    assert.ifError(err);
-    files.forEach(function(file) {
-        require(path.join(routesDir, file)).init(app);
+function selectOperation(operations) {
+    return _.find(operations, function(oper) {
+        return oper.httpMethod === 'GET';
+    });
+}
+
+function selectRequired(parameters) {
+    return _.chain(parameters).filter(function(param) {
+        return param.required == true;
+    }).pluck('name').value()
+}
+
+function parseQuery(query, params) {
+    _.keys(query).forEach(function(key) {
+        if (!_.chain(params).pluck('name').contains(key.toString()).value()) {
+            delete query[key];
+        }
+    });
+    return query;
+}
+
+apiConfig.apis.forEach(function(api) {
+    app.get(apiURL + api.path, function(req, res) {
+        var parameters = selectOperation(api.operations).parameters,
+            required = selectRequired(parameters),
+            parsedQuery = parseQuery(req.query, parameters);
+
+        db.searchQuery(parsedQuery, function(doc) {
+            response.setResponse(res, doc);
+        });
     });
 });
 
