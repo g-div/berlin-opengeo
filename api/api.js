@@ -2,16 +2,22 @@
 
 var express = require('express'),
     http = require('http'),
+    fs = require('fs'),
     path = require('path'),
     config = require(path.resolve(__dirname, '../config.js')),
     swagger = require('swagger-express'),
-    YAML = require('require-yaml');
+    YAML = require('js-yaml');
 
 
 var app = express(),
     defaultRouting = require('./lib/router.js'),
-    docs = path.resolve(__dirname, './docs.yml'),
-    apiConfig = require(docs);
+    docs = path.resolve(config.documentation),
+    apiConfig = YAML.safeLoad(fs.readFileSync(docs).toString());
+
+// reload the api documentation on change
+fs.watchFile(docs, function() {
+    apiConfig = YAML.safeLoad(fs.readFileSync(docs).toString());
+});
 
 
 // swagger
