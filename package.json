@@ -11,6 +11,7 @@
     "mongojs": "~0.9.6",
     "swagger-express": "~1.0.1",
     "require-yaml": "0.0.1",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "flatiron": "~0.3.11"
   }
 }
