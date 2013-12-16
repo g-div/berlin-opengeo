@@ -1,28 +1,9 @@
 var _ = require('underscore'),
-    db = require('../../lib/db.js'),
-    response = require('./response.js');
+    path = require('path'),
+    db = require(path.resolve(__dirname, '../../lib/db')),
+    response = require(path.resolve(__dirname, 'response')),
+    apitools = require(path.resolve(__dirname, '../../lib/api-tools'));
 
-
-function selectOperation(operations) {
-    return _.find(operations, function(oper) {
-        return oper.httpMethod === 'GET';
-    });
-}
-
-function selectRequired(parameters) {
-    return _.chain(parameters).filter(function(param) {
-        return param.required == true;
-    }).pluck('name').value()
-}
-
-function parseQuery(query, params) {
-    _.keys(query).forEach(function(key) {
-        if (!_.chain(params).pluck('name').contains(key.toString()).value()) {
-            delete query[key];
-        }
-    });
-    return query;
-}
 
 function search(parsedQuery, res) {
     db.searchQuery(parsedQuery, function(doc) {
@@ -33,9 +14,9 @@ function search(parsedQuery, res) {
 module.exports.init = function(app, apiConfig) {
     apiConfig.apis.forEach(function(api) {
         app.get(apiConfig.resourcePath + api.path, function(req, res) {
-            var parameters = selectOperation(api.operations).parameters,
-                required = selectRequired(parameters),
-                parsedQuery = parseQuery(req.query, parameters);
+            var parameters = apitools.selectOperation(api.operations).parameters,
+                required = apitools.selectRequired(parameters),
+                parsedQuery = apitools.parseQuery(req.query, parameters);
 
             if (required.length != 0) {
                 required.forEach(function(reqm) {
