@@ -10,18 +10,17 @@ module.exports = function() {
 	app = this;
 
 	var query = {},
-		keys = Object.keys(this.argv).slice(1),
-		that = this;
+		keys = Object.keys(app.argv).slice(1),
 
 	keys.length = keys.length - 1;
 
 	keys.forEach(function(argument, i) {
-		if (that.argv[argument] == true || that.argv[argument].length <= 0) {
+		if (app.argv[argument] == true || app.argv[argument].length <= 0) {
 			app.log.error('Please insert a valid value for the following parameter:', argument)
 			process.exit();
 		}
 		if (_.contains(_.keys(apitools.getArgv()), argument)) {
-			query[argument] = '' + that.argv[argument];
+			query[argument] = '' + app.argv[argument];
 		} else {
 			app.log.error('Parameter unknow:', argument);
 			app.log.error('Please read the documentation or run "node cli/cli.js" (without any additional command) for help.')
