@@ -5,7 +5,6 @@ var app,
 	_ = require('underscore'),
 	dsv = require("dsv"),
 	csv = dsv(","),
-	db = require(path.resolve(__dirname, '../../../lib/db')),
 	headers = [],
 	results = [];
 
@@ -19,7 +18,7 @@ function error(error) {
 }
 
 function search(query, callback) {
-	db.searchQuery(query, function(data) {
+	app.db.searchQuery(query, function(data) {
 		results.push(data);
 		callback();
 	});

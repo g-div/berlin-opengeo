@@ -1,16 +1,12 @@
 var app,
-	flatiron = require('flatiron'),
 	path = require('path'),
-	_ = require('underscore'),
-	db = require(path.resolve(__dirname, '../../../lib/db')),
-	apitools = require(path.resolve(__dirname, '../../../lib/api-tools'));
-
+	_ = require('underscore');
 
 module.exports = function() {
 	app = this;
 
 	var query = {},
-		keys = Object.keys(app.argv).slice(1),
+		keys = Object.keys(this.argv).slice(1);
 
 	keys.length = keys.length - 1;
 
@@ -19,7 +15,7 @@ module.exports = function() {
 			app.log.error('Please insert a valid value for the following parameter:', argument)
 			process.exit();
 		}
-		if (_.contains(_.keys(apitools.getArgv()), argument)) {
+		if (_.contains(_.keys(app.apitools.getArgv()), argument)) {
 			query[argument] = '' + app.argv[argument];
 		} else {
 			app.log.error('Parameter unknow:', argument);
@@ -33,7 +29,7 @@ module.exports = function() {
 		process.exit();
 	}
 
-	db.searchQuery(query, function(data) {
+	app.db.searchQuery(query, function(data) {
 		console.info(data);
 		process.exit();
 	});

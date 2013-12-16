@@ -3,7 +3,11 @@
 var flatiron = require('flatiron'),
 	path = require('path'),
 	app = flatiron.app,
+	db = require(path.resolve(__dirname, '../lib/db'));
 	api = require(path.resolve(__dirname, '../lib/api-tools'));
+
+app.db = db;
+app.apitools = api;
 
 app.use(flatiron.plugins.cli, {
 	source: path.join(__dirname, 'lib', 'commands'),
