@@ -12,9 +12,11 @@ app.use(flatiron.plugins.cli, {
 		'Simple run node cli.js <command>', '',
 		'commands:',
 		'  geocodefile - Geocode a CSV or a JSON file',
-		'  geocode - Geocode an address using at least one of the following parameters',
+		'  geocode - Geocode an address using at least one of the parameters below',
 		'',
 		'Example:',
+		'./cli.js geocodefile path/to/file.csv',
+		'  or',
 		'./cli.js geocode --addresse "Alexanderplatz 1"'
 			]
 });
