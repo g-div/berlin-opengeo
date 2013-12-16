@@ -9,6 +9,14 @@ var app,
 	headers = [],
 	results = [];
 
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
+function error(error) {
+	app.log.error(error);
+	process.exit();
+}
 
 function search(query, callback) {
 	db.searchQuery(query, function(data) {
@@ -18,23 +26,30 @@ function search(query, callback) {
 };
 
 function processFile(file) {
+	var extension = "";
+	if (!(file.endsWith('.json') || file.endsWith('.csv'))) {
+		error('Only .json and .csv files are allowed.');
+	} else {
+		extension = file.split('.')[1];
+	}
+
 	app.log.info('Geocoding the file: ' + file);
 	try {
-		fs.readFile(file, function(err, content) {
+		fs.readFile(path.resolve(file), function(err, content) {
 			if (err) {
-				app.log.error('Error reading the input file. Do the file really exists ?');
-				process.exit();
+				error('Error reading the input file. Do the file really exists ?');
 			}
 
-			async.forEach(csv.parse(content.toString()), search, function(err) {
-				if (err) app.log.error('An error occurred connecting to the database');
+			var q = (extension === 'csv') ? csv.parse(content.toString()) : JSON.parse(content);
+
+			async.forEach(q, search, function(err) {
+				if (err) error('An error occurred connecting to the database.');
 				console.log(_.flatten(results));
-				process.exit();				
+				process.exit();
 			});
 		});
 	} catch (e) {
-		app.log.error('Error reading the input file. Do the file really exists ?');
-		process.exit();
+		error('Error reading the input file. Do the file really exists ?');
 	};
 };
 
@@ -42,7 +57,7 @@ module.exports = function(file) {
 	app = this;
 
 	if (typeof(file) === 'function') {
-		app.log.warn('Please enter a valid filename')
+		app.log.warn('Please enter a valid filename.')
 		app.prompt.get('filename', function(err, result) {
 			processFile(result.filename);
 		});
