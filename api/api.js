@@ -6,21 +6,18 @@ var express = require('express'),
     path = require('path'),
     config = require(path.resolve(__dirname, '../config.js')),
     swagger = require('swagger-express'),
-    YAML = require('js-yaml');
+    apitools = require(path.resolve(__dirname, '../lib/api-tools'));
+
 
 
 var app = express(),
     defaultRouting = require('./lib/router.js'),
     docs = path.resolve(config.documentation),
-    apiConfig = getApiDocumentation();
-
-function getApiDocumentation() {
-    return YAML.safeLoad(fs.readFileSync(docs).toString());
-}
+    apiConfig = apitools.getApiDocumentation(docs);
 
 // reload the api documentation on change
 fs.watchFile(docs, function() {
-    apiConfig = getApiDocumentation();
+    apiConfig = apitools.getApiDocumentation(docs);
 });
 
 
