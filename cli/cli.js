@@ -3,7 +3,7 @@
 var flatiron = require('flatiron'),
 	path = require('path'),
 	app = flatiron.app,
-	api = require(path.resolve('./lib/api-tools'));
+	api = require(path.resolve(__dirname, '../lib/api-tools'));
 
 app.use(flatiron.plugins.cli, {
 	source: path.join(__dirname, 'lib', 'commands'),
@@ -12,7 +12,10 @@ app.use(flatiron.plugins.cli, {
 		'Simple run node cli.js <command>', '',
 		'commands:',
 		'  geocodefile - Geocode a CSV or a JSON file',
-		'  geocode - Geocode an address using the following parameters',
+		'  geocode - Geocode an address using at least one of the following parameters',
+		'',
+		'Example:',
+		'./cli.js geocode --addresse "Alexanderplatz 1"'
 			]
 });
 
