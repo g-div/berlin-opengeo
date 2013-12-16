@@ -12,7 +12,7 @@ var express = require('express'),
 
 var app = express(),
     defaultRouting = require('./lib/router.js'),
-    docs = path.resolve(config.documentation),
+    docs = path.resolve(__dirname, '..', config.documentation),
     apiConfig = apitools.getApiDocumentation(docs);
 
 // reload the api documentation on change
