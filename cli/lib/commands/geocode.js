@@ -47,7 +47,7 @@ module.exports = function() {
 	});
 
 	app.db.searchQuery(query, function(data) {
-		app.apitools.processPrint(data, toPrint, argvKeys, formatToCSV);
+		app.apitools.processPrint(data, toPrint, formatToCSV);
 		process.exit();
 	});
 

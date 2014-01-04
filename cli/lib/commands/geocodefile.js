@@ -43,7 +43,18 @@ function processFile(file) {
 
 			async.forEach(q, search, function(err) {
 				if (err) error('An error occurred connecting to the database.');
-				console.log(_.flatten(results));
+
+				var formatCSV = false;
+				if (typeof(app.argv.csv) !== 'undefined') {
+					formatCSV = true;
+				}
+
+				if (typeof(app.argv.print) === 'string') {
+					var toPrint = app.argv.print.split(',');
+					app.apitools.processPrint(results, toPrint, formatCSV);
+				} else {
+					app.apitools.processPrint(results, [], formatCSV);
+				}
 				process.exit();
 			});
 		});
