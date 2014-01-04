@@ -1,7 +1,5 @@
 var app,
 	path = require('path'),
-	dsv = require('dsv'),
-	csv = dsv(','),
 	_ = require('underscore');
 
 module.exports = function() {
@@ -48,18 +46,8 @@ module.exports = function() {
 		}
 	});
 
-	var result = {};
 	app.db.searchQuery(query, function(data) {
-		if (toPrint.length != 0) { 
-			toPrint.forEach(function(print) {
-				if (_.contains(argvKeys, print)) {
-					result[print] = _.pluck(data, print).toString();
-				}
-			});
-			(formatToCSV === true) ? console.info(csv.format([result])) : console.info(result);
-		} else {
-			console.info(data);
-		}
+		app.apitools.processPrint(data, toPrint, argvKeys, formatToCSV);
 		process.exit();
 	});
 
