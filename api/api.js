@@ -2,7 +2,6 @@
 
 var express = require('express'),
     http = require('http'),
-    fs = require('fs'),
     path = require('path'),
     config = require(path.resolve(__dirname, '../config.js')),
     swagger = require('swagger-express'),
@@ -14,12 +13,6 @@ var app = express(),
     defaultRouting = require('./lib/router.js'),
     docs = path.resolve(__dirname, '..', config.documentation),
     apiConfig = apitools.getApiDocumentation(docs);
-
-// reload the api documentation on change
-fs.watchFile(docs, function() {
-    apiConfig = apitools.getApiDocumentation(docs);
-});
-
 
 // swagger
 app.use(swagger.init(app, {
