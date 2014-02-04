@@ -1,5 +1,6 @@
 module.exports = {
     "db": "geocoder",
+    "collection": "data",
     "documentation": "./docs.yml",
     "api": {
         "hostname": "localhost",
