@@ -1,4 +1,5 @@
 #! /bin/sh
+set -e
 
 URL="http://download.odcdn.de/"
 NAME="full-data.json.stream"
