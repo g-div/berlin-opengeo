@@ -175,6 +175,19 @@ apis:
 - path: /address/
   operations:
 
+  - httpMethod: POST
+    summary: Insert a New Address
+    notes: Post example
+    nickname: PostAddress
+    consumes: 
+        - application/json
+    parameters:
+
+      - name: strnr
+        description: ?
+        paramType: query
+        dataType: integer
+
   - httpMethod: GET
     summary: Send a request, serching by address
     notes: Returns an array of geolocations-objects
