@@ -3,10 +3,7 @@
   "version": "0.0.1",
   "repository": "https://github.com/g-div/berlin-opengeo.git",
   "private": true,
-  "scripts": {
-    "start": "./node_modules/nodemon/bin/nodemon.js --watch docs.yml  api/api.js"
-  },
   "dependencies": {
-    "apibox": "0.0.14"
+    "apibox": "0.0.19"
   }
 }

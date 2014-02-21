@@ -11,16 +11,17 @@ An Open Source geocoder for Berlin based on the data published [here](http://dat
     npm install
 
 ## Start
-    npm start
+    apibox-serve
     
 or
     
-    node api/api.js
+    apibox-cli
 
+for the command-line interface.
 
 ## API Documentation
 
-then open your browser at [http://localhost:9987/docs/](http://localhost:9987/docs/) to visit the API documentation
+Open your browser at [http://localhost:9987/docs/](http://localhost:9987/docs/) to visit the API documentation
 
 
 ### Requirements:
@@ -31,10 +32,4 @@ then open your browser at [http://localhost:9987/docs/](http://localhost:9987/do
 - Node.js
 - npm
 
-Built on top of: Node.js, Express, Express-Swagger, Swagger-UI and MongoDB.
-
-### TODOs
-- CORS ✓
-- Fix mongoimport in **setup.sh**
-- Caching (Redis ?) 
-- API-Key Authentification
+Built on top of [apibox](https://github.com/g-div/apibox)

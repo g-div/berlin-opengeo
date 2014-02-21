@@ -18,8 +18,8 @@ echo "Extracting the archive"
 cd $DEST
 7z e $NAME$EXTENSION
 
-# if your mongodb stores data in a folder with to few memory, please chose another one:
-#mongod --dbpath /lot/of/freespace
+# if your mongodb stores data in a folder with to few memory, please chose another one using:
+# mongod --dbpath /lot/of/freespace
 FREE=$(df -h ./ | grep -vE '^Filesystem|tmpfs'| awk '{ print $4 }' | sed 's/G//')
 if [ $FREE -lt 500 ]; then
 	echo "There are less than 5 GB freespace"
