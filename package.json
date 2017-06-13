@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "repository": "https://github.com/g-div/berlin-opengeo.git",
   "private": true,
+  "license": "MIT",
   "dependencies": {
     "apibox": "0.0.19"
   }
